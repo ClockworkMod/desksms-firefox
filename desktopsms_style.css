@@ -1,10 +1,24 @@
 body{
     font-family: Arial;
+    font-size: 14px;
 }
 
 .containContent{
     
 }
+
+div.incoming{
+    background-color: #ADF;
+    color: #000;
+    border-bottom: solid #FFF 1px;
+}
+
+div.outgoing{
+    background-color: #AFD;
+    color: #000;
+    border-bottom: solid #FFF 1px;
+}
+
 
 .hide{
     display: none;

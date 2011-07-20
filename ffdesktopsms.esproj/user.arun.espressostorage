@@ -13,7 +13,7 @@
 		<key>StateType</key>
 		<string>ProjectWindow</string>
 		<key>TopLeftPoint</key>
-		<string>{303, 587}</string>
+		<string>{334, 878}</string>
 	</dict>
 	<key>com.macrabbit.Espresso.FileManager.DisclosureCollapsed</key>
 	<false/>
@@ -23,7 +23,7 @@
 		<array/>
 	</dict>
 	<key>com.macrabbit.Espresso.Publisher.DisclosureCollapsed</key>
-	<true/>
+	<false/>
 	<key>com.macrabbit.Espresso.Workspace.Tabs</key>
 	<dict>
 		<key>Tabs</key>
@@ -45,10 +45,6 @@
 				<string>file://localhost/Users/arun/Documents/ffdesktopsms/dsmsScript.js</string>
 				<key>StateType</key>
 				<string>DefaultTab</string>
-			</dict>
-			<dict>
-				<key>StateType</key>
-				<string>PreviewTab</string>
 			</dict>
 		</array>
 	</dict>
