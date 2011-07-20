@@ -2,6 +2,7 @@ $(document).ready(function(){
     numbers = [];
 
     var url ="http://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
+//    var url ="https://2.desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
     $.get(url,
     function(data,textStatus,jqXHR)
     {
