@@ -35,7 +35,7 @@ $(document).ready(function(){
 
         // Group Messages
         var threads = {};
-        for (i in data)
+        for (var i in data)
         {
             var num = data[i].number;
             if(threads[num] == null)
@@ -53,10 +53,9 @@ $(document).ready(function(){
 
         // Display texts
         showTxts(threads);
+
     }
-    ,"jsonp").error(function(){
-        alert(textStatus);
-    });
+    ,"jsonp");
 
     function realTime(utc)
     {
@@ -73,28 +72,30 @@ $(document).ready(function(){
 
     function showTxts(threads)
     {
-        var giantString = '';
-        for(i in threads)
+        for(var i in threads)
         {
-            giantString+='<div class="txtThread">';
-            for (j in threads[i])
+            console.log(i);
+            var xclone = $('.thread-template').clone();
+            xclone.find('strong').text(threads[i][0]['number']);
+            $('#txtStream').append(xclone.removeClass('thread-template').addClass('threadBox').show());
+
+            for (var j in threads[i])
             {
                 var txt = threads[i][j];
+                var yclone = $('.message-template').clone();
 
-                //Handle newlines and html tags
-                txt['message'] = txt['message'].replace('<','&lt');
-                txt['message'] = txt['message'].replace('>','&gt');
-                txt['message'] = txt['message'].replace('\n','<br>');
-
-                if(txt['type'] == 'incoming')
-                    giantString += sprintf('<div class="%s"><strong>%s:</strong><br><em>Sent at: %s</em><br>%s</div>',
-                                txt['type'],txt['name'],realTime(txt['date']),txt['message']);
+                if(txt['type']=='incoming')
+                    yclone.find('strong').text(txt['number']+': ')
                 else
-                    giantString += sprintf('<div class="%s"><strong>Me:</strong><br><em>Sent at: %s</em><br>%s</div>',
-                                txt['name'],realTime(txt['date']),txt['message']);
+                    yclone.find('strong').text('Me:')
+
+                yclone.find('span').text(txt['message']);
+
+               xclone.append(yclone.removeClass('message-template').show());
+
             }
-            giantString+='</div><br>';
+            $('#txtStream').append('<br />');
         }
-        $("#txtStream").append(giantString);
+
     }
 });

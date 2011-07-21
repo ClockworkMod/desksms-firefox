@@ -4,6 +4,13 @@ body{
     font-size: 14px;
 }
 
+div.threadBox{
+    border: solid 1px;
+    border-radius:5px;
+    padding:5px;
+    background-color:#ADF;
+}
+
 div.containContent{
     width: 300px;
 }
