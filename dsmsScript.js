@@ -25,8 +25,8 @@ $(document).ready(function(){
         }
     );
 
-    //var url ="http://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
-    var url ="https://2.desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
+    var url ="http://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
+    //var url ="https://2.desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
     $.get(url,
     function(data,textStatus,jqXHR)
     {
@@ -93,7 +93,7 @@ $(document).ready(function(){
                     giantString += sprintf('<div class="%s"><strong>Me:</strong><br><em>Sent at: %s</em><br>%s</div>',
                                 txt['name'],realTime(txt['date']),txt['message']);
             }
-            giantString+='</div><br>'
+            giantString+='</div><br>';
         }
         $("#txtStream").append(giantString);
     }

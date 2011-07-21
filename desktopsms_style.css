@@ -1,5 +1,6 @@
 body{
     font-family: Arial;
+    background-color: #FFF;
     font-size: 14px;
 }
 
@@ -55,4 +56,8 @@ ul
 li{
     display: inline;
     padding: 0;
+}
+
+a {
+    color: #0AF;
 }
