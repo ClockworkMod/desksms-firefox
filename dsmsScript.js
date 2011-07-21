@@ -1,11 +1,36 @@
 $(document).ready(function(){
     numbers = [];
 
-    var url ="http://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
-//    var url ="https://2.desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
+    $('#inbox').click(
+        function(event)
+        {
+            event.preventDefault();
+            $('#sendListItem').removeClass("selected");
+            $('#inboxListItem').addClass("selected");
+
+            $('#txtStreamFrame').removeClass("hide");
+            $('#containText').addClass("hide");
+        }
+    );
+
+    $('#text').click(
+        function(event)
+        {
+            event.preventDefault();
+            $('#inboxListItem').removeClass("selected");
+            $('#sendListItem').addClass("selected");
+
+            $('#containText').removeClass("hide");
+            $('#txtStreamFrame').addClass("hide");
+        }
+    );
+
+    //var url ="http://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
+    var url ="https://2.desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
     $.get(url,
     function(data,textStatus,jqXHR)
     {
+        data = data.data
         console.log(data);
 
         // Group Messages
@@ -26,21 +51,8 @@ $(document).ready(function(){
         }
         console.log(threads);
 
-        var giantString = '';
-        for(i in threads)
-        {
-            for (j in threads[i])
-            {
-                var txt = threads[i][j];
-                if(txt['type'] == 'incoming')
-                    giantString += sprintf('<div class="%s"><strong>From: %s</strong><br><em>Sent at: %s</em><br>%s</div>',
-                                txt['type'],txt['number'],realTime(txt['date']),txt['message']);
-                else
-                    giantString += sprintf('<div class="%s"><strong>To: %s</strong><br><em>Sent at: %s</em><br>%s</div>',
-                                txt['type'],txt['number'],realTime(txt['date']),txt['message']);
-            }
-        }
-        $("#content").append(giantString);
+        // Display texts
+        showTxts(threads);
     }
     ,"jsonp").error(function(){
         alert(textStatus);
@@ -52,10 +64,37 @@ $(document).ready(function(){
         var month = theDate.getMonth() + 1;
         var day = theDate.getDate();
         var year = theDate.getFullYear();
-        var hour = theDate.getHours()+1;
-        var minute = theDate.getMinutes()+1;
-        var sec = theDate.getSeconds()+1;
+        var hour = theDate.getHours();
+        var minute = theDate.getMinutes();
+        var sec = theDate.getSeconds();
         theDate = hour + ':' + minute + ':' + sec + ',' +month + "/" + day + "/" + year;
         return theDate;
+    }
+
+    function showTxts(threads)
+    {
+        var giantString = '';
+        for(i in threads)
+        {
+            giantString+='<div class="txtThread">';
+            for (j in threads[i])
+            {
+                var txt = threads[i][j];
+
+                //Handle newlines and html tags
+                txt['message'] = txt['message'].replace('<','&lt');
+                txt['message'] = txt['message'].replace('>','&gt');
+                txt['message'] = txt['message'].replace('\n','<br>');
+
+                if(txt['type'] == 'incoming')
+                    giantString += sprintf('<div class="%s"><strong>%s:</strong><br><em>Sent at: %s</em><br>%s</div>',
+                                txt['type'],txt['name'],realTime(txt['date']),txt['message']);
+                else
+                    giantString += sprintf('<div class="%s"><strong>Me:</strong><br><em>Sent at: %s</em><br>%s</div>',
+                                txt['name'],realTime(txt['date']),txt['message']);
+            }
+            giantString+='</div><br>'
+        }
+        $("#txtStream").append(giantString);
     }
 });
