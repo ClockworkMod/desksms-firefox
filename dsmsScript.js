@@ -13,6 +13,18 @@ $(document).ready(function(){
         }
     );
 
+    $('#blah').click(
+            function(event)
+            {
+                event.preventDefault();
+                $.ajax({
+                    type:'POST',
+                    url:'http://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/outbox',
+                    data:String({'data':[{"message":"this is a test","number":"2489740779"}]}),
+                    dataType: 'jsonp'
+                });
+            });
+
     $('#text').click(
         function(event)
         {
@@ -59,7 +71,7 @@ $(document).ready(function(){
 
     function realTime(utc)
     {
-        theDate = new Date(utc);
+        var theDate = new Date(utc);
         var month = theDate.getMonth() + 1;
         var day = theDate.getDate();
         var year = theDate.getFullYear();
@@ -68,6 +80,38 @@ $(document).ready(function(){
         var sec = theDate.getSeconds();
         theDate = hour + ':' + minute + ':' + sec + ',' +month + "/" + day + "/" + year;
         return theDate;
+    }
+
+    function longAgo(utc)
+    {
+        //ROUND!!!!
+        var theDate = new Date(utc);
+        var diff = (new Date()).getTime() - theDate.getTime();
+        var dayCount = Math.floor(diff/86400000);
+        var howLong = '';
+
+        if(dayCount >= 14)
+        {
+            howLong = sprintf('%s %s ago.',Math.floor(dayCount/7),'weeks');
+        }
+        else if(dayCount >= 1)
+        {
+            howLong = sprintf('%s %s ago.',dayCount,'days');
+        }
+        else
+        {
+            //hours
+            if(Math.floor(diff/3600000) >= 1)
+                howLong = sprintf('%s %s ago.',dayCount,'hours');
+            //minutes
+            else if(Math.floor(diff/60000) >= 1)
+                howLong = sprintf('%s %s ago.',dayCount,'minutes');
+            //Just now
+            else
+                howLong = 'Just now.';
+        }
+
+        return howLong;
     }
 
     function showTxts(threads)
@@ -79,8 +123,12 @@ $(document).ready(function(){
             xclone.find('strong').text(threads[i][0]['number']);
             $('#txtStream').append(xclone.removeClass('thread-template').addClass('threadBox').show());
 
+            var msgCount = 0;
+            var charCount = 0;
             for (var j in threads[i])
             {
+                if (msgCount > 2 || charCount > 320)
+                    break;
                 var txt = threads[i][j];
                 var yclone = $('.message-template').clone();
 
@@ -91,11 +139,12 @@ $(document).ready(function(){
 
                 yclone.find('span').text(txt['message']);
 
-               xclone.append(yclone.removeClass('message-template').show());
+                xclone.append(yclone.removeClass('message-template').show());
 
+                msgCount++;
+                charCount+=txt['message'].length;
             }
             $('#txtStream').append('<br />');
         }
-
     }
 });
