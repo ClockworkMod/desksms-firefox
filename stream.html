@@ -5,8 +5,27 @@
     <script src="https://raw.github.com/koush/ROMManagerManifest/gh-pages/sprintf.js">
     </script>
     <script src="dsmsScript.js"></script>
+    <script>
+      function foo() {
+        var str = JSON.stringify({'data':[{"message":"this is a test","number":"2489740779"}]});
+        event.preventDefault();
+        $.ajax({
+            type:'POST',
+            url: 'https://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/outbox',
+            data:str,
+            success: function(data) {
+              console.log(data)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.log(textStatus);
+            }
+        });
+      }
+    </script>
+    
   </head>
   <body>
+    <a href='#' onclick='javascript:foo()'>asdasdsadasd</a>
     <div class="containContent" id="txtStream">
         <div class="thread-template" style="display:none;">
             <p>

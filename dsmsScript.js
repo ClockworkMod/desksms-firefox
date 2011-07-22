@@ -16,12 +16,18 @@ $(document).ready(function(){
     $('#blah').click(
             function(event)
             {
+                var str = JSON.stringify({'data':[{"message":"this is a test","number":"2489740779"}]});
                 event.preventDefault();
                 $.ajax({
                     type:'POST',
-                    url:'http://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/outbox',
-                    data:String({'data':[{"message":"this is a test","number":"2489740779"}]}),
-                    dataType: 'jsonp'
+                    url: 'https://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/outbox',
+                    data:str,
+                    success: function(data) {
+                      console.log(data)
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                      console.log(textStatus);
+                    }
                 });
             });
 
@@ -37,7 +43,7 @@ $(document).ready(function(){
         }
     );
 
-    var url ="http://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
+    var url ="https://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
     //var url ="https://2.desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
     $.get(url,
     function(data,textStatus,jqXHR)
