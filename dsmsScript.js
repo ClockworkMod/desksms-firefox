@@ -91,21 +91,23 @@ $(document).ready(function(){
         var howLong = '';
 
         if(dayCount >= 14)
-        {
             howLong = sprintf('%s %s ago.',Math.floor(dayCount/7),'weeks');
-        }
-        else if(dayCount >= 1)
-        {
+        else if(dayCount > 1)
             howLong = sprintf('%s %s ago.',dayCount,'days');
-        }
+        else if(dayCount == 1)
+            howLong = '1 day ago.';
         else
         {
             //hours
-            if(Math.floor(diff/3600000) >= 1)
+            if(Math.floor(diff/3600000) > 1)
                 howLong = sprintf('%s %s ago.',dayCount,'hours');
+            if(Math.floor(diff/3600000) == 1)
+                howLong = '1 day ago.';
             //minutes
             else if(Math.floor(diff/60000) >= 1)
                 howLong = sprintf('%s %s ago.',dayCount,'minutes');
+            else if(Math.floor(diff/60000) == 1)
+                howLong = '1 minute ago.';
             //Just now
             else
                 howLong = 'Just now.';
@@ -125,11 +127,22 @@ $(document).ready(function(){
 
             var msgCount = 0;
             var charCount = 0;
+            var latestDate = 0;
             for (var j in threads[i])
             {
+                // Limit the number of messages shown
                 if (msgCount > 2 || charCount > 320)
                     break;
+
                 var txt = threads[i][j];
+
+                //First Text listed is the lastest text
+                if (j==0)
+                {
+                    latestDate = txt['date'];
+                    xclone.find('em').text(longAgo(latestDate));
+                }
+
                 var yclone = $('.message-template').clone();
 
                 if(txt['type']=='incoming')
