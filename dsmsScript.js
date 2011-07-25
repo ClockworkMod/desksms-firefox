@@ -1,5 +1,3 @@
-var notifications = require("notifications");
-
 $(document).ready(function(){
     var numbers = [];
     var newTxts = 0;
