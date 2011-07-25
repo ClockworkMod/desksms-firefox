@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    numbers = [];
+    var numbers = [];
+    var newTxts = 0;
 
     $('#inbox').click(
         function(event)
@@ -13,6 +14,7 @@ $(document).ready(function(){
         }
     );
 
+    // Simple text function
     $('#blah').click(
             function(event)
             {
@@ -43,37 +45,43 @@ $(document).ready(function(){
         }
     );
 
-    var url ="https://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
-    //var url ="https://2.desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
-    $.get(url,
-    function(data,textStatus,jqXHR)
+    // Get texts, display texts
+    getNShowTxts();
+
+    // Repeat
+    setInterval(function(){getNShowTxts();}, 60000);
+
+    function getNShowTxts()
     {
-        data = data.data
-        console.log(data);
-
-        // Group Messages
-        var threads = {};
-        for (var i in data)
+        var url ="https://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
+        //var url ="https://2.desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/sms";
+        $.get(url,
+        function(data,textStatus,jqXHR)
         {
-            var num = data[i].number;
-            if(threads[num] == null)
+            var data = data.data
+
+            // Group Messages
+            var threads = {};
+            for (var i in data)
             {
-                var group = [];
-                group.push(data[i]);
-                threads[num] = group;
+                var num = data[i].number;
+                if(threads[num] == null)
+                {
+                    var group = [];
+                    group.push(data[i]);
+                    threads[num] = group;
+                }
+                else if(threads[num])
+                {
+                    threads[num].push(data[i]);
+                }
             }
-            else if(threads[num])
-            {
-                threads[num].push(data[i]);
-            }
+
+            showTxts(threads, (new Date()).getTime());
+
         }
-        console.log(threads);
-
-        // Display texts
-        showTxts(threads);
-
+        ,"jsonp");
     }
-    ,"jsonp");
 
     function realTime(utc)
     {
@@ -106,12 +114,12 @@ $(document).ready(function(){
         {
             //hours
             if(Math.floor(diff/3600000) > 1)
-                howLong = sprintf('%s %s ago.',dayCount,'hours');
-            if(Math.floor(diff/3600000) == 1)
+                howLong = sprintf('%s %s ago.',Math.floor(diff/3600000),'hours');
+            else if(Math.floor(diff/3600000) == 1)
                 howLong = '1 day ago.';
             //minutes
             else if(Math.floor(diff/60000) >= 1)
-                howLong = sprintf('%s %s ago.',dayCount,'minutes');
+                howLong = sprintf('%s %s ago.',Math.floor(diff/60000),'minutes');
             else if(Math.floor(diff/60000) == 1)
                 howLong = '1 minute ago.';
             //Just now
@@ -122,11 +130,13 @@ $(document).ready(function(){
         return howLong;
     }
 
-    function showTxts(threads)
+    function showTxts(threads, theTime)
     {
+        $(".threadBox").remove();
+        newTxts = 0;
+
         for(var i in threads)
         {
-            console.log(i);
             var xclone = $('.thread-template').clone();
             xclone.find('strong').text(threads[i][0]['number']);
             $('#txtStream').append(xclone.removeClass('thread-template').addClass('threadBox').show());
@@ -149,6 +159,10 @@ $(document).ready(function(){
                     xclone.find('em').text(longAgo(latestDate));
                 }
 
+                // Count the number of new texts from minute and a half ago
+                if(txt['date'] > theTime-90000)
+                    newTxts++;
+
                 var yclone = $('.message-template').clone();
 
                 if(txt['type']=='incoming')
@@ -163,7 +177,15 @@ $(document).ready(function(){
                 msgCount++;
                 charCount+=txt['message'].length;
             }
-            $('#txtStream').append('<br />');
+            $('#txtStream').append('<br class="threadBox"/>');
+        }
+        if(newTxts)
+        {
+            notifications.notify({
+                    title:'Num Count:',
+                    text:String(newTxts)
+                    });
+             //alert(newTxts);
         }
     }
 });
