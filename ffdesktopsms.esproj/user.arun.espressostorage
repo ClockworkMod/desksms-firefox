@@ -7,16 +7,16 @@
 	<key>ESProjectWindowState</key>
 	<dict>
 		<key>ContentSize</key>
-		<string>{1105, 710}</string>
+		<string>{1106, 705}</string>
 		<key>ProjectURL</key>
 		<string>file://localhost/Users/arun/Documents/ffdesktopsms/ffdesktopsms.esproj/</string>
 		<key>StateType</key>
 		<string>ProjectWindow</string>
 		<key>TopLeftPoint</key>
-		<string>{335, 878}</string>
+		<string>{303, 873}</string>
 	</dict>
 	<key>com.macrabbit.Espresso.FileManager.DisclosureCollapsed</key>
-	<false/>
+	<true/>
 	<key>com.macrabbit.Espresso.FileManager.FileControllerState</key>
 	<dict>
 		<key>ExpandedURLs</key>

@@ -60,7 +60,7 @@ $(document).ready(function(){
         $.get(url,
         function(data,textStatus,jqXHR)
         {
-            var data = data.data
+            var data = data.data;
 
             // Group Messages
             var threads = {};
@@ -118,7 +118,7 @@ $(document).ready(function(){
             if(Math.floor(diff/3600000) > 1)
                 howLong = sprintf('%s %s ago.',Math.floor(diff/3600000),'hours');
             else if(Math.floor(diff/3600000) == 1)
-                howLong = '1 day ago.';
+                howLong = '1 hour ago.';
             //minutes
             else if(Math.floor(diff/60000) >= 1)
                 howLong = sprintf('%s %s ago.',Math.floor(diff/60000),'minutes');
@@ -181,12 +181,5 @@ $(document).ready(function(){
             }
             $('#txtStream').append('<br class="threadBox"/>');
         }
-
-        notifications.notify({
-                title:'Num Count:',
-                text:String(newTxts)
-                });
-         //alert(newTxts);
-
     }
 });
