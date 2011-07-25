@@ -1,3 +1,5 @@
+var notifications = require("notifications");
+
 $(document).ready(function(){
     var numbers = [];
     var newTxts = 0;
@@ -49,7 +51,7 @@ $(document).ready(function(){
     getNShowTxts();
 
     // Repeat
-    setInterval(function(){getNShowTxts();}, 60000);
+    setInterval(function(){getNShowTxts();}, 20000);
 
     function getNShowTxts()
     {
@@ -179,13 +181,12 @@ $(document).ready(function(){
             }
             $('#txtStream').append('<br class="threadBox"/>');
         }
-        if(newTxts)
-        {
-            notifications.notify({
-                    title:'Num Count:',
-                    text:String(newTxts)
-                    });
-             //alert(newTxts);
-        }
+
+        notifications.notify({
+                title:'Num Count:',
+                text:String(newTxts)
+                });
+         //alert(newTxts);
+
     }
 });
