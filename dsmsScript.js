@@ -22,7 +22,8 @@ $(document).ready(function(){
                 event.preventDefault();
                 $.ajax({
                    type:'GET',
-                   url: 'https://desksms.appspot.com/api/v1/user/dsms.clockwork@gmail.com/outbox?operation=POST&data='+encodeURIComponent(str),
+                   dataType:"jsonp",
+                   url: 'https://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/outbox?operation=POST&data='+encodeURIComponent(str),
                    success: function(data) {
                      console.log(data)
                    },
