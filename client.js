@@ -1,24 +1,37 @@
-var BASE_URL = "https://desksms.appspot.com";
-var MESSAGE_URL = BASE_URL + "/message";
-var REGISTER_URL = BASE_URL + "/register";
-var AUTH_URL = BASE_URL + "/_ah/login";
-var API_URL = BASE_URL + "/api/v1";
-var USER_URL = API_URL + "/user/%s";
-var SETTINGS_URL = USER_URL + "/settings";
-var SMS_URL = USER_URL + "/sms";
-var CALL_URL = USER_URL + "/call";
-var OUTBOX_URL = USER_URL + "/outbox";
-var LOGIN_URL = API_URL + "/user/whoami";
-var CONTINUE_URL = AUTH_URL + "?continue=file%3A%2F%2F%2FUsers%2Farun%2FDocuments%2Fffdesktopsms%2Findex.html";
-
 desksms = {};
 
-desksms.login = function(){
-    
+
+desksms.BASE_URL = "https://desksms.appspot.com";
+desksms.MESSAGE_URL = BASE_URL + "/message";
+REGISTER_URL = BASE_URL + "/register";
+desksms.AUTH_URL = BASE_URL + "/_ah/login";
+desksms.API_URL = BASE_URL + "/api/v1";
+desksms.USER_URL = API_URL + "/user/%s";
+desksms.SETTINGS_URL = USER_URL + "/settings";
+desksms.SMS_URL = USER_URL + "/sms";
+desksms.CALL_URL = USER_URL + "/call";
+desksms.OUTBOX_URL = USER_URL + "/outbox";
+desksms.LOGIN_URL = API_URL + "/user/whoami";
+desksms.CONTINUE_URL = AUTH_URL + "?continue=file%3A%2F%2F%2FUsers%2Farun%2FDocuments%2Fffdesktopsms%2Findex.html";
+
+
+desksms.login = function(callback){
+    // on success
+    desksms.email = data.email;
 };
 
-desksms.sms = function(){
-    
+desksms.sms = function(callback){
+    // null check email here.
+   url = sprintf(desksms.SMS_URL, desksms.email);
+      $.get(url,
+        function(data,textStatus,jqXHR)
+        {
+             callback(null, data);
+
+            }
+        ).error(function(err) {
+            callback(err);
+        });
 };
 
 desksms.sendMessage = function(message, number){
