@@ -18,19 +18,18 @@ $(document).ready(function(){
     $('#blah').click(
             function(event)
             {
-                var str = JSON.stringify({'data':[{"message":"this is a test","number":"2489740779"}]});
+                var str = '{"data":[{"message": "send this from the phone!", "number": "+12489740779", "date": 1311626880000}]}';
                 event.preventDefault();
                 $.ajax({
-                    type:'POST',
-                    url: 'https://desksms.appspot.com/api/v1/user/DSMS.clockwork@gmail.com/outbox',
-                    data:str,
-                    success: function(data) {
-                      console.log(data)
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                      console.log(textStatus);
-                    }
-                });
+                   type:'GET',
+                   url: 'https://desksms.appspot.com/api/v1/user/dsms.clockwork@gmail.com/outbox?operation=POST&data='+encodeURIComponent(str),
+                   success: function(data) {
+                     console.log(data)
+                   },
+                   error: function(jqXHR, textStatus, errorThrown) {
+                     console.log(jqXHR);
+                   }
+               });
             });
 
     $('#text').click(
@@ -113,8 +112,11 @@ $(document).ready(function(){
         else
         {
             //hours
-            if(Math.floor(diff/3600000) > 1)
+            if(Math.floor(diff/3600000) > 2)
                 howLong = sprintf('%s %s ago.',Math.floor(diff/3600000),'hours');
+            // More than an hour
+            else if(diff/3600000.0 > 1.5)
+                howLong = 'More than an hour ago.';
             else if(Math.floor(diff/3600000) == 1)
                 howLong = '1 hour ago.';
             //minutes
