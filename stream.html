@@ -4,7 +4,45 @@
     <script src="jquery-1.6.1.min.js"></script>
     <script src="https://raw.github.com/koush/ROMManagerManifest/gh-pages/sprintf.js">
     </script>
+        <script src="client.js"></script>
     <script src="dsmsScript.js"></script>
+    <script>
+      var repeater = window.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);
+
+      function addReplyBox(index, number)
+        {
+            window.clearInterval(repeater);
+            repeater = 0;
+            var xclone = $('.send-template').clone();
+            var str = '.threadBox.'+ index;
+            xclone.find('#number').InnerHTML = number;
+            xclone.find('#msgBox').InnerText = number;
+            $(str).append(xclone.show().addClass('temp'));
+            $('.replyLink').hide();
+        }
+
+        function sendText()
+        {
+            var number = document.forms['txtForm'].elements['number'].value;
+            var message = document.forms['txtForm'].elements['msgBox'].value;
+            if(message)
+            {
+              desksms.sendMessage(message, number);
+              desksms.sms(getNShowTxts);
+              repeater = self.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);
+            }
+            $('.temp').remove();
+            $('.replyLink').show();
+        }
+
+        function cancelSend()
+        {
+            $('.temp').remove();
+            $('.replyLink').show();
+            desksms.sms(getNShowTxts);
+            repeater = self.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);     
+        }
+    </script>
   </head>
   <body>
     <div class="containContent" id="txtStream">
@@ -15,8 +53,20 @@
               <em>X Y's Ago</em>
             </p>
         </div>
+
         <div class="message-template" style="display:none;">
             <strong>Message Sender</strong><span>Message</span>
+        </div>
+
+        <div class="send-template" style="display:none;">
+          <br />
+          <form id="txtForm" onSubmit="return sendText();">
+            <input id="number" name="number" type="text" style="display:none;" />
+            <input id="msgBox" name="msgBox" type="text" />
+            <br />
+            <input id="sendTxt" type="submit" value="Reply" />
+            <input id="cancel" type="button" value="Cancel" onClick="cancelSend();" />
+          </form>
         </div>
     </div>
   </body>
