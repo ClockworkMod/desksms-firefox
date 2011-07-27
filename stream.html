@@ -18,6 +18,7 @@
             xclone.find('#number').val(number);
             xclone.find('#msgBox').val(number).hide();
             $(str).append(xclone.show().addClass('temp'));
+            alert(document.getElementById('number').value);
             $('.replyLink').hide();
         }
 
@@ -62,7 +63,7 @@
           <br />
           <form id="txtForm" onSubmit="return sendText();">
             <input id="number" name="number" type="text" value ="" />
-            <input id="msgBox" name="msgBox" type="text" / value="" />
+            <input id="msgBox" name="msgBox" type="text" value="" />
             <br />
             <input id="sendTxt" type="submit" value="Reply" />
             <input id="cancel" type="button" value="Cancel" onClick="cancelSend();" />

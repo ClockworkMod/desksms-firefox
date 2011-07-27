@@ -155,5 +155,6 @@ function showTxts(threads, theTime)
         $('#txtStream').append('<br class="threadBox"/>');
         threadNum++;
     }
+    $('#blah').text(newTxts);
 }
 
