@@ -15,16 +15,16 @@
             repeater = 0;
             var xclone = $('.send-template').clone();
             var str = '.threadBox.'+ index;
-            xclone.find('#number').InnerHTML = number;
-            xclone.find('#msgBox').InnerText = number;
+            xclone.find('#number').val(number);
+            xclone.find('#msgBox').val(number).hide();
             $(str).append(xclone.show().addClass('temp'));
             $('.replyLink').hide();
         }
 
         function sendText()
         {
-            var number = document.forms['txtForm'].elements['number'].value;
-            var message = document.forms['txtForm'].elements['msgBox'].value;
+            var number = document.getElementById('number').value;
+            var message = document.getElementById('msgBox').value;
             if(message)
             {
               desksms.sendMessage(message, number);
@@ -61,8 +61,8 @@
         <div class="send-template" style="display:none;">
           <br />
           <form id="txtForm" onSubmit="return sendText();">
-            <input id="number" name="number" type="text" style="display:none;" />
-            <input id="msgBox" name="msgBox" type="text" />
+            <input id="number" name="number" type="text" value ="" />
+            <input id="msgBox" name="msgBox" type="text" / value="" />
             <br />
             <input id="sendTxt" type="submit" value="Reply" />
             <input id="cancel" type="button" value="Cancel" onClick="cancelSend();" />
