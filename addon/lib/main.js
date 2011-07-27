@@ -14,7 +14,7 @@ var xpanel = panels.Panel({
              title:'hahahaha',
              text:x
           });
-         dSmsWid.content = parseInt(x) + 1;
+         dSmsWid.content = x;
     },
     height: 500,
     width: 350

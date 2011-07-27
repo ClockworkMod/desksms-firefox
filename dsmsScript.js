@@ -84,20 +84,22 @@ function longAgo(utc)
     {
         //hours
         if (Math.floor(diff / 3600000) > 2)
-        howLong = sprintf('%s %s ago.', Math.floor(diff / 3600000), 'hours');
+            howLong = sprintf('%s %s ago.', Math.floor(diff / 3600000), 'hours');
         // More than an hour
         else if (diff / 3600000.0 > 1.5)
-        howLong = 'More than an hour ago.';
+            howLong = 'More than an hour ago.';
         else if (Math.floor(diff / 3600000) == 1)
-        howLong = '1 hour ago.';
+            howLong = '1 hour ago.';
         //minutes
         else if (Math.floor(diff / 60000) >= 1)
-        howLong = sprintf('%s %s ago.', Math.floor(diff / 60000), 'minutes');
+            howLong = sprintf('%s %s ago.', Math.floor(diff / 60000), 'minutes');
         else if (Math.floor(diff / 60000) == 1)
-        howLong = '1 minute ago.';
+            howLong = '1 minute ago.';
+        else if (Math.floor(diff / 1000) > 10)
+            howLong = sprintf('%s %s ago.', Math.floor(diff / 1000), 'seconds');
         //Just now
         else
-        howLong = 'Just now.';
+            howLong = 'Just now.';
     }
 
     return howLong;
@@ -106,7 +108,6 @@ function longAgo(utc)
 function showTxts(threads, theTime)
  {
     $(".threadBox").remove();
-    newTxts = 0;
 
     var threadNum = 0;
     for (var i in threads)
@@ -122,7 +123,7 @@ function showTxts(threads, theTime)
         {
             // Limit the number of messages shown
             if (msgCount > 2 || charCount > 320)
-            break;
+                break;
 
             var txt = threads[i][j];
 
@@ -134,15 +135,15 @@ function showTxts(threads, theTime)
             }
 
             // Count the number of new texts from minute and a half ago
-            if (txt['date'] > theTime - 90000)
-            newTxts++;
+            if (txt['date'] >= (theTime - 20000))
+                newTxts++;
 
             var yclone = $('.message-template').clone();
 
             if (txt['type'] == 'incoming')
-            yclone.find('strong').text(txt['number'] + ': ')
+                yclone.find('strong').text(txt['number'] + ': ')
             else
-            yclone.find('strong').text('Me:')
+                yclone.find('strong').text('Me:')
 
             yclone.find('span').text(txt['message']);
 
@@ -151,10 +152,10 @@ function showTxts(threads, theTime)
             msgCount++;
             charCount += txt['message'].length;
         }
-        xclone.append('<a class="replyLink" onClick="addReplyBox(' + threadNum + ',' + txt['number'] + ');" href="#">Reply</a>');
+        xclone.append(newTxts+' <a class="replyLink" onClick="addReplyBox(' + threadNum + ',' + txt['number'] + ');" href="#">Reply</a>');
         $('#txtStream').append('<br class="threadBox"/>');
         threadNum++;
     }
-    $('#blah').text(newTxts);
+    $('#blah').text(String(newTxts));
 }
 

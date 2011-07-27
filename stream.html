@@ -11,6 +11,7 @@
 
       function addReplyBox(index, number)
         {
+            newTxts = 0;
             window.clearInterval(repeater);
             repeater = 0;
             var xclone = $('.send-template').clone();
@@ -18,7 +19,6 @@
             xclone.find('#number').val(number);
             xclone.find('#msgBox').val(number).hide();
             $(str).append(xclone.show().addClass('temp'));
-            alert(document.getElementById('number').value);
             $('.replyLink').hide();
         }
 
@@ -46,6 +46,7 @@
     </script>
   </head>
   <body>
+    <div id="blah">0</div>
     <div class="containContent" id="txtStream">
         <div class="thread-template" style="display:none;">
             <p>
