@@ -5,14 +5,76 @@
     <script src="sprintf.js"></script>
     <script src="client.js"></script>
     <script src="dsmsScript.js"></script>
+    <script>
+      var repeater = window.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);
+
+      function addReplyBox(index, number)
+        {
+            newTxts = 0;
+            window.clearInterval(repeater);
+            repeater = 0;
+            var xclone = $('.send-template').clone();
+            var str = '.threadBox.'+ index;
+            xclone.find('#number').val(number);
+            xclone.find('#msgBox').val(number).hide();
+            $(str).append(xclone.show().addClass('temp'));
+            $('.replyLink').hide();
+        }
+
+        function sendText()
+        {
+            var number = document.getElementById('number').value;
+            var message = document.getElementById('msgBox').value;
+            if(message)
+            {
+              desksms.sendMessage(message, number);
+              desksms.sms(getNShowTxts);
+              repeater = self.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);
+            }
+            $('.temp').remove();
+            $('.replyLink').show();
+        }
+
+        function cancelSend()
+        {
+            $('.temp').remove();
+            $('.replyLink').show();
+            desksms.sms(getNShowTxts);
+            repeater = self.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);     
+        }
+    </script>
   </head>
   <body>
     <div class="containContent" id="content">
         DeskSMS
-        <br /><br />
+        <div id="messages" style="display:none"></div>
+        <div id="count" style="display:none">0</div>
         <br /><br />
         <div id="txtStreamFrame">
-          <iframe src="stream.html"></iframe>
+          <div class="containContent scroll" id="txtStream">
+              <div class="thread-template" style="display:none;">
+                  <p>
+                    <strong>Number/Name</strong>
+                    <br />
+                    <em>X Y's Ago</em>
+                  </p>
+              </div>
+
+              <div class="message-template" style="display:none;">
+                  <strong>Message Sender</strong><span>Message</span>
+              </div>
+
+              <div class="send-template" style="display:none;">
+                <br />
+                <form id="txtForm" onSubmit="return sendText();">
+                  <input id="number" name="number" type="text" value ="" />
+                  <input id="msgBox" name="msgBox" type="text" value="" />
+                  <br />
+                  <input id="sendTxt" type="submit" value="Reply" />
+                  <input id="cancel" type="button" value="Cancel" onClick="cancelSend();" />
+                </form>
+              </div>
+          </div>
         </div>
     </div>
   </body>

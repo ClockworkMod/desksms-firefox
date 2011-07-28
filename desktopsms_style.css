@@ -5,6 +5,12 @@ body{
     font-size: 14px;
 }
 
+div.scroll {
+height: 400px;
+width: 340px;
+overflow: auto;
+}
+
 div.threadBox{
     border: solid 1px;
     border-radius:5px;
@@ -13,7 +19,7 @@ div.threadBox{
 }
 
 div.containContent{
-    width: 300px;
+    width: 340px;
 }
 
 div.incoming{
@@ -46,12 +52,6 @@ div#send{
 
 .hide{
     display: none;
-}
-
-iframe{
-    border: 0px;
-    height: 400px;
-    width: 325px;
 }
 
 ul

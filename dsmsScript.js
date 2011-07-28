@@ -110,6 +110,7 @@ function showTxts(threads, theTime)
     $(".threadBox").remove();
 
     var threadNum = 0;
+    var newMessages = [];
     for (var i in threads)
     {
         var xclone = $('.thread-template').clone();
@@ -122,7 +123,7 @@ function showTxts(threads, theTime)
         for (var j in threads[i])
         {
             // Limit the number of messages shown
-            if (msgCount > 2 || charCount > 320)
+            if ((msgCount > 2) || (charCount > 320))
                 break;
 
             var txt = threads[i][j];
@@ -135,13 +136,20 @@ function showTxts(threads, theTime)
             }
 
             // Count the number of new texts from minute and a half ago
-            if (txt['date'] >= (theTime - 20000))
+            if (txt['date'] >= (theTime - 30000))
                 newTxts++;
 
             var yclone = $('.message-template').clone();
 
             if (txt['type'] == 'incoming')
+            {
                 yclone.find('strong').text(txt['number'] + ': ')
+
+                if (txt['date'] >= (theTime - 30500))
+                {
+                    newMessages.push({'number':String(txt['number']),'message':String(txt['message'])});
+                }
+            }
             else
                 yclone.find('strong').text('Me:')
 
@@ -152,10 +160,15 @@ function showTxts(threads, theTime)
             msgCount++;
             charCount += txt['message'].length;
         }
-        xclone.append(newTxts+' <a class="replyLink" onClick="addReplyBox(' + threadNum + ',' + txt['number'] + ');" href="#">Reply</a>');
+        xclone.append(' <a class="replyLink" onClick="addReplyBox(' + threadNum + ',' + txt['number'] + ');" href="#">Reply</a>');
         $('#txtStream').append('<br class="threadBox"/>');
         threadNum++;
+
+        if(threadNum > 4)
+            break;
     }
-    $('#blah').text(String(newTxts));
+    $('#count').text(String(newTxts));
+    newTxts =0;
+    $('#messages').text(JSON.stringify(newMessages));
 }
 

@@ -1,8 +1,9 @@
 function checkTxts(){
-    var x = $('#blah').text();
-    console.log(x);
-    if(parseInt(x))
-        self.postMessage(x);
+    var count = $('#count').text();
+    var messages = $('#messages').text();
+    messages = $.parseJSON(messages);
+    if(parseInt(count))
+        self.postMessage({ count: count, messages: messages, type:'messages'});
 }
 checkTxts();
 
