@@ -8,8 +8,8 @@ var data = require("self").data;
 var newCount = 0;
 
 var xpanel = panels.Panel({
-    contentURL:'file:///Users/arun/Documents/ffdesktopsms/index.html',
-    //contentURL: "http://www.clockworkmod.com/ffdesktopsms/index.html",
+    //contentURL:'file:///Users/arun/Documents/ffdesktopsms/index.html',
+    contentURL: "http://www.clockworkmod.com/ffdesktopsms/index.html",
     contentScriptFile: [data.url("jquery-1.6.1.min.js"), data.url("makeNot.js")],
     contentScriptWhen: "ready",
     onMessage:function(data){

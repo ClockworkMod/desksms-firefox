@@ -92,22 +92,24 @@ function showTxts(theTime)
 
     var threadNum = 0;
     var newMessages = [];
+    var threadsL = threads.length;
     for (var i in threads)
     {
         var xclone = $('.thread-template').clone();
-        xclone.find('strong').text(threads[i][0]['number']);
+        xclone.find('strong').text(threads[threadsL-i-1][0]['number']);
         $('#txtStream').append(xclone.removeClass('thread-template').addClass('threadBox ' + threadNum).show());
 
         var msgCount = 0;
         var charCount = 0;
         var latestDate = 0;
-        for (var j in threads[i])
+        var threadL = threads.[threadsL-i-1].length;
+        for (var j in threads[threadsL-i-1])
         {
             // Limit the number of messages shown
             if ((msgCount > 2) || (charCount > 320))
                 break;
 
-            var txt = threads[i][j];
+            var txt = threads[threadsL-i-1][threadL-j-1];
 
             //First Text listed is the lastest text
             if (j == 0)
