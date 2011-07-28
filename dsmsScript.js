@@ -1,57 +1,19 @@
 var newTxts = 0;
-$(document).ready(function() {
-    $('#inbox').click(
-    function(event)
+var threads = {};
+$(document).ready(function()
+{
+    desksms.whoami(function(err, data)
     {
-        event.preventDefault();
-        $('#sendListItem').removeClass("selected");
-        $('#inboxListItem').addClass("selected");
+        if (!data.email)
+        {
+            window.location.href = window.desksms.getLoginUrl();
+        }
+    });
 
-        $('#txtStreamFrame').removeClass("hide");
-        $('#containText').addClass("hide");
-    }
-    );
-
-    $('#text').click(
-    function(event)
-    {
-        event.preventDefault();
-        $('#inboxListItem').removeClass("selected");
-        $('#sendListItem').addClass("selected");
-
-        $('#containText').removeClass("hide");
-        $('#txtStreamFrame').addClass("hide");
-    }
-    );
     // Get texts, display texts
-    window.desksms.sms(getNShowTxts);
+    window.desksms.sms(getTxts);
+    showTxts((new Date()).getTime());
 });
-
-
-function getNShowTxts(error, data)
- {
-    var data = data.data;
-
-    // Group Messages
-    var threads = {};
-    for (var i in data)
-    {
-        var num = data[i].number;
-        if (threads[num] == null)
-        {
-            var group = [];
-            group.push(data[i]);
-            threads[num] = group;
-        }
-        else if (threads[num])
-        {
-            threads[num].push(data[i]);
-        }
-    }
-
-    showTxts(threads, (new Date()).getTime());
-
-}
 
 function realTime(utc)
  {
@@ -68,18 +30,18 @@ function realTime(utc)
 
 function longAgo(utc)
  {
-    //ROUND!!!!
+    //Consider making more options?
     var theDate = new Date(utc);
     var diff = (new Date()).getTime() - theDate.getTime();
     var dayCount = Math.floor(diff / 86400000);
     var howLong = '';
 
     if (dayCount >= 14)
-    howLong = sprintf('%s %s ago.', Math.floor(dayCount / 7), 'weeks');
+        howLong = sprintf('%s %s ago.', Math.floor(dayCount / 7), 'weeks');
     else if (dayCount > 1)
-    howLong = sprintf('%s %s ago.', dayCount, 'days');
+        howLong = sprintf('%s %s ago.', dayCount, 'days');
     else if (dayCount == 1)
-    howLong = '1 day ago.';
+        howLong = '1 day ago.';
     else
     {
         //hours
@@ -105,7 +67,26 @@ function longAgo(utc)
     return howLong;
 }
 
-function showTxts(threads, theTime)
+function getTxts(error, data)
+ {
+    var data = data.data;
+
+    // Group Messages
+    for (var i in data)
+    {
+        var num = data[i].number;
+        if (threads[num] == null)
+        {
+            var group = [];
+            group.push(data[i]);
+            threads[num] = group;
+        }
+        else if (threads[num])
+            threads[num].push(data[i]);
+    }
+}
+
+function showTxts(theTime)
  {
     $(".threadBox").remove();
 
@@ -136,7 +117,7 @@ function showTxts(threads, theTime)
             }
 
             // Count the number of new texts from minute and a half ago
-            if (txt['date'] >= (theTime - 30000))
+            if (txt['date'] >= (theTime - 20000))
                 newTxts++;
 
             var yclone = $('.message-template').clone();
@@ -145,10 +126,8 @@ function showTxts(threads, theTime)
             {
                 yclone.find('strong').text(txt['number'] + ': ')
 
-                if (txt['date'] >= (theTime - 30500))
-                {
-                    newMessages.push({'number':String(txt['number']),'message':String(txt['message'])});
-                }
+                if (txt['date'] >= (theTime - 20000))
+                    newMessages.push({'icon':'','number':String(txt['number']),'message':String(txt['message'])});
             }
             else
                 yclone.find('strong').text('Me:')
@@ -171,4 +150,3 @@ function showTxts(threads, theTime)
     newTxts =0;
     $('#messages').text(JSON.stringify(newMessages));
 }
-

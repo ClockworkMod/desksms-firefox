@@ -8,12 +8,12 @@ var data = require("self").data;
 var newCount = 0;
 
 var xpanel = panels.Panel({
-    contentURL:'http://www.clockworkmod.com/ffdesktopsms/index.html',
+    contentURL:'file:///Users/arun/Documents/ffdesktopsms/index.html',
     //contentURL: "http://www.clockworkmod.com/ffdesktopsms/index.html",
     contentScriptFile: [data.url("jquery-1.6.1.min.js"), data.url("makeNot.js")],
     contentScriptWhen: "ready",
     onMessage:function(data){
-        //console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data));
         for(i in data.messages)
         {
             notifications.notify({
@@ -21,6 +21,7 @@ var xpanel = panels.Panel({
                 text:data.messages[i].message
             });
          }
+
          dSmsWid.content = '<img src="http://www.bing.com/favicon.ico"> ' + String(newCount+parseInt(data.count));
     },
     height: 500,

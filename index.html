@@ -6,7 +6,7 @@
     <script src="client.js"></script>
     <script src="dsmsScript.js"></script>
     <script>
-      var repeater = window.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);
+      var repeater = window.setInterval(function(){getNShowTxts();}, 20000);
 
       function addReplyBox(index, number)
         {
@@ -24,12 +24,11 @@
         function sendText()
         {
             var number = document.getElementById('number').value;
-            var message = document.getElementById('msgBox').value;
+            var message = document.find('msgBox').value;
             if(message)
             {
               desksms.sendMessage(message, number);
-              desksms.sms(getNShowTxts);
-              repeater = self.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);
+              repeater = window.setInterval(function(){timeAct(repeater);}, 20000);
             }
             $('.temp').remove();
             $('.replyLink').show();
@@ -39,8 +38,14 @@
         {
             $('.temp').remove();
             $('.replyLink').show();
-            desksms.sms(getNShowTxts);
-            repeater = self.setInterval(function(){desksms.sms(getNShowTxts);}, 20000);     
+            desksms.sms(getTxts);
+            repeater = window.setInterval(function(){timeAct(repeater);}, 20000);
+        }
+
+        function getNShowTxts()
+        {
+          window.desksms.sms(getTxts);
+          showTxts((new Date()).getTime());
         }
     </script>
   </head>

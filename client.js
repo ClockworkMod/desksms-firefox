@@ -10,12 +10,26 @@ desksms.SETTINGS_URL = desksms.USER_URL + "/settings";
 desksms.SMS_URL = desksms.USER_URL + "/sms";
 desksms.CALL_URL = desksms.USER_URL + "/call";
 desksms.OUTBOX_URL = desksms.USER_URL + "/outbox";
-desksms.LOGIN_URL = desksms.API_URL + "/user/whoami";
-desksms.CONTINUE_URL = desksms.AUTH_URL + "?continue=%s";
+desksms.LOGIN_URL = desksms.API_URL + "/user/login?continue=%s";
+desksms.LOGOUT_URL = desksms.API_URL + "/user/logout?continue=%s";
+desksms.WHOAMI_URL = desksms.API_URL + "/user/whoami";
 
-desksms.login = function(){
-    return sprintf(desksms.CONTINUE_URL, encodeURIComponent(window.location.url));
-};
+var jsonp = function(url, cb, data) {
+    $.get(url, data, function(data) {
+        cb(null, data);
+    },
+    "jsonp").error(function(err) {
+        cb(err);
+    });
+}
+
+desksms.whoami = function(callback) {
+    jsonp(desksms.WHOAMI_URL, callback);
+}
+
+desksms.getLoginUrl = function() {
+    return sprintf(desksms.LOGIN_URL, window.location.href);
+}
 
 desksms.sms = function(callback){
     // null check email here.

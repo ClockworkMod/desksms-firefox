@@ -7,4 +7,4 @@ function checkTxts(){
 }
 checkTxts();
 
-var cycle = setInterval(checkTxts, 10000);
+var cycle = setInterval(checkTxts, 1000);
