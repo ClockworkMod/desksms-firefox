@@ -6,47 +6,41 @@
     <script src="client.js"></script>
     <script src="dsmsScript.js"></script>
     <script>
-      var repeater = window.setInterval(function(){getNShowTxts();}, 20000);
-
+      var repeater = window.setInterval(function(){getNShowTxts();}, 5000);
       function addReplyBox(index, number)
-        {
-            newTxts = 0;
-            window.clearInterval(repeater);
-            repeater = 0;
-            var xclone = $('.send-template').clone();
-            var str = '.threadBox.'+ index;
-            xclone.find('#number').val(number);
-            xclone.find('#msgBox').val(number).hide();
-            $(str).append(xclone.show().addClass('temp'));
-            $('.replyLink').hide();
-        }
+      {
+          newTxts = 0;
+          window.clearInterval(repeater);
+          repeater = 0;
+          var xclone = $('.send-template').clone();
+          var str = '.threadBox.'+ index;
+        xclone.find('input.number').attr('id',"number").attr('value',number).hide();
+          xclone.find('input.msgBox').attr('id',"msgBox");
+          $(str).append(xclone.show().addClass('temp'));
+          $('.replyLink').hide();
+      }
 
-        function sendText()
-        {
-            var number = document.getElementById('number').value;
-            var message = document.find('msgBox').value;
-            if(message)
-            {
-              desksms.sendMessage(message, number);
-              repeater = window.setInterval(function(){timeAct(repeater);}, 20000);
-            }
-            $('.temp').remove();
-            $('.replyLink').show();
-        }
+      function sendText()
+      {
+          var number = document.getElementById('number').value;
+          var message = document.getElementById('msgBox').value;
+          if(message)
+          {
+            desksms.sendMessage(message, number);
+            getNShowTxts();
+            repeater = window.setInterval(function(){getNShowTxts(repeater);}, 20000);
+          }
+          $('.temp').remove();
+          $('.replyLink').show();
+      }
 
-        function cancelSend()
-        {
-            $('.temp').remove();
-            $('.replyLink').show();
-            desksms.sms(getTxts);
-            repeater = window.setInterval(function(){timeAct(repeater);}, 20000);
-        }
-
-        function getNShowTxts()
-        {
-          window.desksms.sms(getTxts);
-          showTxts((new Date()).getTime());
-        }
+      function cancelSend()
+      {
+          $('.temp').remove();
+          $('.replyLink').show();
+          getNShowTxts()
+          repeater = window.setInterval(function(){getNShowTxts(repeater);}, 20000);
+      }
     </script>
   </head>
   <body>
@@ -71,12 +65,12 @@
 
               <div class="send-template" style="display:none;">
                 <br />
-                <form id="txtForm" onSubmit="return sendText();">
-                  <input id="number" name="number" type="text" value ="" />
-                  <input id="msgBox" name="msgBox" type="text" value="" />
+                <form>
+                  <input class="number" type="text" value ="" />
+                  <input class="msgBox" type="text" value="" />
                   <br />
-                  <input id="sendTxt" type="submit" value="Reply" />
-                  <input id="cancel" type="button" value="Cancel" onClick="cancelSend();" />
+                  <input type="button" value="Reply" onClick="sendText();"/>
+                  <input type="button" value="Cancel" onClick="cancelSend();" />
                 </form>
               </div>
           </div>

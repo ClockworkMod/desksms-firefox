@@ -67,12 +67,12 @@ function longAgo(utc)
     return howLong;
 }
 
-function getTxts(error, data)
+function getTxts(error, vdata)
  {
-    var data = data.data;
-
+    var data = vdata.data;
+    threads = {};
     // Group Messages
-    for (var i in data)
+    for (var i in data.reverse())
     {
         var num = data[i].number;
         if (threads[num] == null)
@@ -96,20 +96,20 @@ function showTxts(theTime)
     for (var i in threads)
     {
         var xclone = $('.thread-template').clone();
-        xclone.find('strong').text(threads[threadsL-i-1][0]['number']);
+        xclone.find('strong').text(threads[i][0]['number']);
         $('#txtStream').append(xclone.removeClass('thread-template').addClass('threadBox ' + threadNum).show());
 
         var msgCount = 0;
         var charCount = 0;
         var latestDate = 0;
-        var threadL = threads.[threadsL-i-1].length;
-        for (var j in threads[threadsL-i-1])
+        var threadL = threads[i].length;
+        for (var j in threads[i])
         {
             // Limit the number of messages shown
             if ((msgCount > 2) || (charCount > 320))
                 break;
 
-            var txt = threads[threadsL-i-1][threadL-j-1];
+            var txt = threads[i][j];
 
             //First Text listed is the lastest text
             if (j == 0)
@@ -151,4 +151,10 @@ function showTxts(theTime)
     $('#count').text(String(newTxts));
     newTxts =0;
     $('#messages').text(JSON.stringify(newMessages));
+}
+
+function getNShowTxts()
+{
+  window.desksms.sms(getTxts);
+  showTxts((new Date()).getTime());
 }

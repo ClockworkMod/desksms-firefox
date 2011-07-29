@@ -46,14 +46,14 @@ desksms.sms = function(callback){
 };
 
 desksms.sendMessage = function(message, number){
-    function(event)
-    {
-        var str = sprintf('{"data":[{"message": "%s", "number": "%s", "date": %s}]}',[message, number, (new Date).getDate()]);
-        event.preventDefault();
+        //var date = String((new Date()).getTime());
+        var envelope = { data: [{ number: number, message: message }] };
+        var str = JSON.stringify(envelope);
+        console.log(str);
         $.ajax({
            type:'GET',
            dataType:"jsonp",
-           url: sprintf(OUTBOX_URL+ '?operation=POST&data='+encodeURIComponent(str),desksms.email),
+           url: desksms.OUTBOX_URL+ '?operation=POST&data='+encodeURIComponent(str),
            success: function(data) {
              console.log(data)
            },
@@ -61,5 +61,4 @@ desksms.sendMessage = function(message, number){
              console.log(jqXHR);
            }
        });
-   }
 };
