@@ -8,3 +8,5 @@ function checkTxts(){
 checkTxts();
 
 var cycle = setInterval(checkTxts, 1000);
+
+window.onbeforeunload = function() { $('body').css('background', 'white'); }

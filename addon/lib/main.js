@@ -8,10 +8,13 @@ var data = require("self").data;
 var newCount = 0;
 
 var xpanel = panels.Panel({
-    contentURL:'file:///Users/arun/Documents/ffdesktopsms/index.html',
-    //contentURL: "http://www.clockworkmod.com/ffdesktopsms/index.html",
+    //contentURL:'file:///Users/arun/Documents/ffdesktopsms/index.html',
+    contentURL: "http://www.clockworkmod.com/ffdesktopsms/index.html",
+    //contentURL: "http://www.clockworkmod.com/desksms",
     contentScriptFile: [data.url("jquery-1.6.1.min.js"), data.url("makeNot.js")],
     contentScriptWhen: "ready",
+    'background': 'white',
+    color:'black',
     onMessage:function(data){
         console.log(JSON.stringify(data));
         for(i in data.messages)
@@ -22,21 +25,25 @@ var xpanel = panels.Panel({
             });
          }
 
-         dSmsWid.content = '<img src="http://www.bing.com/favicon.ico"> ' + String(newCount+parseInt(data.count));
+         if(data.count)
+         {
+             dSmsWid.width = 40;
+             dSmsWid.content = '<img src='+String(data.url('desksms.png'))+'><span style="padding-left:4px;padding-right:4px;background-color:#F00;color:#FFF;">' + String(newCount+parseInt(data.count)) + '</span>';
+             newCount+=parseInt(data.count);
+         }
     },
-    height: 500,
+    height: 475,
     width: 350
 });
 
 var dSmsWid = widgets.Widget({
-    id: "mouseover-effect",
-    label: " ",
-    width: 40,
+    id: "DeskSMS",
+    label: "DeskSMS for Firefox",
+    width: 16,
     panel: xpanel,
-    content: '<img src="http://www.bing.com/favicon.ico"> 0',
+    content: '<img src='+String(data.url('desksms.png'))+'><span style="padding-left:4px;padding-right:4px;">' + '' + '</span>',
     onClick:function(){
-        this.content = '<img src="http://www.bing.com/favicon.ico"> 0';
+        this.content = '<img src='+String(data.url('desksms.png'))+'><span style="padding-left:4px;padding-right:4px;">' + '' + '</span>';
         newCount = 0;
     }
 });
-

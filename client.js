@@ -13,6 +13,7 @@ desksms.OUTBOX_URL = desksms.USER_URL + "/outbox";
 desksms.LOGIN_URL = desksms.API_URL + "/user/login?continue=%s";
 desksms.LOGOUT_URL = desksms.API_URL + "/user/logout?continue=%s";
 desksms.WHOAMI_URL = desksms.API_URL + "/user/whoami";
+desksms.BADGE_URL = desksms.USER_URL + '/badge';
 
 var jsonp = function(url, cb, data) {
     $.get(url, data, function(data) {
