@@ -12,8 +12,6 @@ var xpanel = panels.Panel({
     contentURL: "http://www.clockworkmod.com/desksms#extension=firefox",
     contentScriptFile: [data.url("jquery-1.6.1.min.js"), data.url("makeNot.js")],
     contentScriptWhen: "ready",
-    'background': 'white',
-    color:'black',
     onMessage:function(data){
         console.log(JSON.stringify(data));
         for(i in data.messages)

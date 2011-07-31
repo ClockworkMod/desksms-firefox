@@ -1,7 +1,9 @@
 var newTxts = 0;
 var threads = {};
+
 $(document).ready(function()
 {
+    /*
     desksms.whoami(function(err, data)
     {
         if (!data.email)
@@ -9,7 +11,7 @@ $(document).ready(function()
             window.location.href = window.desksms.getLoginUrl();
         }
     });
-
+*/
     // Get texts, display texts
     window.desksms.sms(getTxts);
     showTxts((new Date()).getTime());
@@ -148,9 +150,10 @@ function showTxts(theTime)
         if(threadNum > 4)
             break;
     }
-    $('#count').text(String(newTxts));
+    $('#count').text(String(newTxts + parseInt($('#count').text()) ) );
     newTxts =0;
-    $('#messages').text(JSON.stringify(newMessages));
+    if($("#count").text()!='0')
+        $('#messages').text(JSON.stringify(newMessages));
 }
 
 function getNShowTxts()
