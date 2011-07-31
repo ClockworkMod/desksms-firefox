@@ -9,8 +9,7 @@ var newCount = 0;
 
 var xpanel = panels.Panel({
     //contentURL:'file:///Users/arun/Documents/ffdesktopsms/index.html',
-    contentURL: "http://www.clockworkmod.com/ffdesktopsms/index.html",
-    //contentURL: "http://www.clockworkmod.com/desksms",
+    contentURL: "http://www.clockworkmod.com/desksms#extension=firefox",
     contentScriptFile: [data.url("jquery-1.6.1.min.js"), data.url("makeNot.js")],
     contentScriptWhen: "ready",
     'background': 'white',
