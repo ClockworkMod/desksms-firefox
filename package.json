@@ -2,7 +2,7 @@
     "name": "desksms", 
     "license": "MPL 1.1/GPL 2.0/LGPL 2.1", 
     "author": "ClockworkMod", 
-    "version": "1.0.5",
+    "version": "1.0.8",
     "fullName": "DeskSMS - Send and Receive Text Messages", 
     "id": "jid1-wBZ79IciTx2Rnw", 
     "description": "The DeskSMS Android/iPhone application let's you send and receive text messages via Gmail, Gtalk, the web, Firefox and Chrome extensions from your own phone number."
